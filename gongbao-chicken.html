@@ -1,0 +1,329 @@
+﻿<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>菜品详情</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+            padding-bottom: 80px; /* 留出空间给底部区域 */
+        }
+
+        .image-section {
+            width: 100%;
+            height: 33vh;
+            background: url('https://via.placeholder.com/600x300') center/cover no-repeat;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-left: 20px; /* 向左对齐 */
+        }
+
+        .price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ff5722;
+            margin-left: 20px; /* 向左对齐 */
+            margin-bottom: 10px;
+        }
+
+        .section {
+            padding: 0 20px;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .sub-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 10px 0;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .option {
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            background-color: #fff;
+        }
+
+            .option.selected {
+                border-color: #3f51b5;
+                background-color: #e6f0ff; /* 点击后的蓝色背景 */
+            }
+
+            .option img {
+                width: 100%;
+                height: auto;
+                border-radius: 5px;
+            }
+
+            .option .extra-cost {
+                font-size: 14px;
+                color: #777;
+            }
+
+        .fixed-bottom {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+            padding: 10px 20px;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .circle-button {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #ccc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .quantity-box {
+            width: 40px;
+            height: 30px;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            line-height: 30px;
+        }
+
+        .add-to-cart {
+            background-color: #3f51b5;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            padding: 20px;
+            display: none;
+            z-index: 1000;
+            width: 80%;
+            max-width: 400px;
+        }
+
+            .modal img {
+                width: 100%;
+                border-radius: 5px;
+            }
+
+            .modal h3 {
+                text-align: center;
+                margin: 10px 0;
+            }
+
+            .modal p {
+                text-align: center;
+                margin: 5px 0;
+            }
+
+        .confirm-button {
+            display: block;
+            margin: 20px auto 0;
+            background: black;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        /* C部分的总共价格右对齐 */
+        .total-price {
+            margin-right: 20px; /* 向右对齐 */
+        }
+    </style>
+</head>
+<body>
+    <!-- A部分：图片和标题 -->
+    <div class="image-section" style="background-image: url('https://i.imgur.com/Fq6BLq3.png');"></div>
+    <div class="title">宫保鸡丁</div>
+    <div class="price">RM10.00</div> <!-- 价格 -->
+    <!-- B部分：选择主食和打包 -->
+    <div class="section">
+        <div class="section-title">请选择主食</div>
+        <div class="sub-title">饭</div>
+        <div class="options-grid">
+            <div class="option" onclick="selectOption(this, 'main', '饭', 0)">
+                <img src="https://via.placeholder.com/100">
+                <div>饭</div>
+                <div class="extra-cost">+RM0.00</div> <!-- 额外加钱 -->
+            </div>
+        </div>
+        <div class="sub-title">面</div>
+        <div class="options-grid">
+            <div class="option" onclick="selectOption(this, 'main', '面1', 0)">
+                <img src="https://via.placeholder.com/100">
+                <div>面1</div>
+                <div class="extra-cost">+RM0.00</div> <!-- 额外加钱 -->
+            </div>
+            <div class="option" onclick="selectOption(this, 'main', '面2', 0)">
+                <img src="https://via.placeholder.com/100">
+                <div>面2</div>
+                <div class="extra-cost">+RM0.00</div> <!-- 额外加钱 -->
+            </div>
+            <div class="option" onclick="selectOption(this, 'main', '面3', 0.50)">
+                <img src="https://via.placeholder.com/100">
+                <div>面3</div>
+                <div class="extra-cost">+RM0.50</div> <!-- 额外加钱 -->
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">打包</div>
+        <div class="options-grid">
+            <div class="option" onclick="selectOption(this, 'package', '打包', 0)">
+                打包
+            </div>
+        </div>
+    </div>
+
+    <!-- C部分：数量和加入购物车 -->
+    <div class="fixed-bottom">
+        <div class="quantity-selector">
+            <div class="circle-button" onclick="changeQuantity(-1)">-</div>
+            <div class="quantity-box" id="quantity">1</div>
+            <div class="circle-button" onclick="changeQuantity(1)">+</div>
+        </div>
+        <div class="total-price">
+            <span>总共价格：RM <span id="total-price">10.00</span></span>
+        </div>
+        <div class="add-to-cart" onclick="showModal()">加入购物车</div>
+    </div>
+
+    <div class="modal" id="confirmationModal">
+        <h3 id="modal-title">宫保鸡丁</h3>
+        <img src="https://via.placeholder.com/100">
+        <p id="modal-choice"></p>
+        <p>总共价格：RM <span id="modal-total-price">10.00</span></p>
+        <div class="confirm-button" onclick="confirmOrder()">确认</div>
+    </div>
+
+    <script>
+        let selectedMain = '';
+        let selectedPackage = '';
+        let mainCost = 0;
+        let packageCost = 0;
+        let quantity = 1;
+
+        function selectOption(element, type, value, extraCost) {
+            // 如果已经选中，则取消
+            if (element.classList.contains('selected')) {
+                element.classList.remove('selected');
+                if (type === 'main') {
+                    selectedMain = '';
+                    mainCost = 0;
+                }
+                if (type === 'package') {
+                    selectedPackage = '';
+                    packageCost = 0;
+                }
+            } else {
+                // 选中该选项
+                document.querySelectorAll(`.option`).forEach(el => {
+                    if (el.getAttribute('onclick').includes(type)) {
+                        el.classList.remove('selected');
+                    }
+                });
+                element.classList.add('selected');
+                if (type === 'main') {
+                    selectedMain = value;
+                    mainCost = extraCost;
+                }
+                if (type === 'package') {
+                    selectedPackage = value;
+                    packageCost = extraCost;
+                }
+            }
+            updateTotalPrice();
+        }
+
+        function changeQuantity(change) {
+            quantity += change;
+            if (quantity < 1) quantity = 1;
+            document.getElementById('quantity').innerText = quantity;
+            updateTotalPrice();
+        }
+
+        function updateTotalPrice() {
+            const totalPrice = (10 + mainCost + packageCost) * quantity; // 10 是基础菜品价格
+            document.getElementById('total-price').innerText = totalPrice.toFixed(2);
+        }
+
+        function showModal() {
+            const modal = document.getElementById('confirmationModal');
+            const choiceText = `主食：${selectedMain || '未选择'} ${selectedPackage ? '，打包' : ''}`;
+            document.getElementById('modal-choice').innerText = choiceText;
+            const totalPrice = (10 + mainCost + packageCost) * quantity;
+            document.getElementById('modal-total-price').innerText = totalPrice.toFixed(2);
+            modal.style.display = 'block';
+        }
+
+        function confirmOrder() {
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const totalPrice = (10 + mainCost + packageCost) * quantity;
+            cart.push({
+                food: '宫保鸡丁',
+                staple: selectedMain,
+                package: selectedPackage ? true : false,
+                quantity: quantity,
+                totalPrice: totalPrice
+            });
+            localStorage.setItem('cart', JSON.stringify(cart));
+
+            // 隐藏弹窗
+            document.getElementById('confirmationModal').style.display = 'none';
+
+            // 弹出提示框
+            alert('已加入购物车');
+
+            // 跳转到菜单页面
+            window.location.href = 'menu.html';  // 将此 URL 替换为实际菜单页面的 URL
+        }
+
+    </script>
+</body>
+</html>

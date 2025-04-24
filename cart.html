@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>购物车</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            padding: 20px;
+        }
+
+        .cart-item {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+            .cart-item h3 {
+                font-size: 20px;
+            }
+
+            .cart-item p {
+                font-size: 16px;
+                color: #555;
+            }
+    </style>
+</head>
+<body>
+
+    <h2>购物车</h2>
+
+    <div id="cart-items"></div>
+
+    <script>
+    window.onload = function() {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const cartItemsContainer = document.getElementById('cart-items');
+
+      if (cart.length === 0) {
+        cartItemsContainer.innerHTML = '<p>购物车为空。</p>';
+        return;
+      }
+
+      cart.forEach(item => {
+        const cartItemDiv = document.createElement('div');
+        cartItemDiv.classList.add('cart-item');
+
+        cartItemDiv.innerHTML = `
+          <h3>${item.name} - ${item.noodleType}</h3>
+          <p>数量：${item.quantity}</p>
+        `;
+
+        cartItemsContainer.appendChild(cartItemDiv);
+      });
+    };
+    </script>
+
+</body>
+</html>
