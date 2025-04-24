@@ -1,0 +1,162 @@
+﻿<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>菜单页面</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .category {
+            width: 20%; /* 左侧菜单占五分之一 */
+            background-color: #2196F3;
+            color: white;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+
+            .category h2 {
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+
+            .category ul {
+                list-style-type: none;
+                padding: 0;
+            }
+
+                .category ul li {
+                    margin: 10px 0;
+                    cursor: pointer;
+                    padding: 10px;
+                    background-color: #1976D2;
+                    border-radius: 5px;
+                    text-align: center;
+                }
+
+                    .category ul li:hover {
+                        background-color: #1565C0;
+                    }
+
+        .menu-items {
+            width: 80%; /* 右侧显示菜品 */
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+
+            .menu-items h2 {
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+
+            .menu-items .item {
+                margin-bottom: 20px;
+                display: flex;
+                justify-content: space-between;
+                background-color: #fff;
+                padding: 10px;
+                border-radius: 5px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+
+                .menu-items .item img {
+                    width: 100px;
+                    height: 100px;
+                    object-fit: cover;
+                    border-radius: 5px;
+                }
+
+                .menu-items .item .details {
+                    flex: 1;
+                    margin-left: 20px;
+                }
+
+                    .menu-items .item .details h3 {
+                        margin: 0;
+                        font-size: 18px;
+                    }
+
+                    .menu-items .item .details p {
+                        color: #777;
+                        margin-top: 5px;
+                    }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- 左侧菜品种类菜单 -->
+        <div class="category">
+            <h2>菜品种类</h2>
+            <ul>
+                <li onclick="showMenuItems('chinese')">中餐</li>
+                <li onclick="showMenuItems('western')">西餐</li>
+                <li onclick="showMenuItems('desserts')">甜点</li>
+                <li onclick="showMenuItems('drinks')">饮料</li>
+            </ul>
+        </div>
+
+        <!-- 右侧菜品列表 -->
+        <div class="menu-items" id="menu-items">
+            <h2>请选择左边的菜品种类</h2>
+        </div>
+    </div>
+
+    <script>
+    // 菜单数据
+    const menuData = {
+      chinese: [
+        { name: '宫保鸡丁', description: '香辣的鸡肉和花生', image: 'https://via.placeholder.com/100' },
+        { name: '北京烤鸭', description: '外脆内嫩的经典菜肴', image: 'https://via.placeholder.com/100' }
+      ],
+      western: [
+        { name: '汉堡', description: '美味的牛肉汉堡', image: 'https://via.placeholder.com/100' },
+        { name: '意大利面', description: '经典的意式意面', image: 'https://via.placeholder.com/100' }
+      ],
+      desserts: [
+        { name: '巧克力蛋糕', description: '浓郁的巧克力味', image: 'https://via.placeholder.com/100' },
+        { name: '草莓慕斯', description: '清新的草莓味', image: 'https://via.placeholder.com/100' }
+      ],
+      drinks: [
+        { name: '橙汁', description: '新鲜的橙子榨汁', image: 'https://via.placeholder.com/100' },
+        { name: '咖啡', description: '浓烈的咖啡风味', image: 'https://via.placeholder.com/100' }
+      ]
+    };
+
+    // 显示菜单项
+    function showMenuItems(category) {
+      const menuItems = menuData[category];
+      const menuContainer = document.getElementById('menu-items');
+      menuContainer.innerHTML = ''; // 清空当前显示内容
+
+      // 显示选中的类别的菜品
+      menuItems.forEach(item => {
+        const itemElement = document.createElement('div');
+        itemElement.classList.add('item');
+
+        itemElement.innerHTML = `
+          <img src="${item.image}" alt="${item.name}">
+          <div class="details">
+            <h3>${item.name}</h3>
+            <p>${item.description}</p>
+          </div>
+        `;
+        menuContainer.appendChild(itemElement);
+      });
+    }
+    </script>
+
+</body>
+</html>
