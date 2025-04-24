@@ -15,6 +15,7 @@
         .container {
             display: flex;
             height: 100vh;
+            flex-wrap: wrap; /* 使内容在屏幕小的时候换行 */
         }
 
         .category {
@@ -64,11 +65,13 @@
             .menu-items .item {
                 margin-bottom: 20px;
                 display: flex;
-                justify-content: space-between;
+                flex-direction: column; /* 切换为纵向布局 */
+                align-items: center;
                 background-color: #fff;
                 padding: 10px;
                 border-radius: 5px;
                 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                text-align: center;
             }
 
                 .menu-items .item img {
@@ -79,8 +82,8 @@
                 }
 
                 .menu-items .item .details {
-                    flex: 1;
-                    margin-left: 20px;
+                    width: 100%;
+                    margin-top: 10px;
                 }
 
                     .menu-items .item .details h3 {
@@ -101,11 +104,43 @@
                         border: none;
                         border-radius: 5px;
                         cursor: pointer;
+                        width: 80%; /* 按钮宽度适配 */
+                        box-sizing: border-box;
                     }
 
                         .menu-items .item .details button:hover {
                             background-color: #1976D2;
                         }
+
+        /* 手机适配 */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .category {
+                width: 100%;
+            }
+
+            .menu-items {
+                width: 100%;
+            }
+
+                .menu-items .item {
+                    flex-direction: column; /* 确保按钮在下方显示 */
+                }
+
+                    .menu-items .item img {
+                        width: 80px;
+                        height: 80px;
+                    }
+
+                    .menu-items .item .details button {
+                        width: 90%;
+                        margin: 10px auto 0;
+                    }
+        }
     </style>
 </head>
 <body>
@@ -161,13 +196,13 @@
                 itemElement.classList.add('item');
 
                 itemElement.innerHTML = `
-              <img src="${item.image}" alt="${item.name}">
-              <div class="details">
-                <h3>${item.name}</h3>
-                <p>${item.description}</p>
-                <button onclick="window.location.href='${item.page}'">查看详情</button>
-              </div>
-            `;
+                  <img src="${item.image}" alt="${item.name}">
+                  <div class="details">
+                    <h3>${item.name}</h3>
+                    <p>${item.description}</p>
+                    <button onclick="window.location.href='${item.page}'">查看详情</button>
+                  </div>
+                `;
                 menuContainer.appendChild(itemElement);
             });
         }
